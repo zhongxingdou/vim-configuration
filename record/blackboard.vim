@@ -1,0 +1,1 @@
+{"generated_by":"Vimana-2010.09303","installer_type":"text","version":0.3,"files":[{"checksum":"8231c51dbf79dd0f8d9033b588be0bc2","file":"/Users/zhonghal/.vim/colors/blackboard.vim"}],"package":"blackboard.vim"}
