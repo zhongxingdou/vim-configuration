@@ -4,6 +4,13 @@
 " Last Change:  2010-08-11 20:47:46
 " Encoding: UTF-8.
 
+if has("win32")
+	set nocompatible
+	source $VIMRUNTIME/vimrc_example.vim
+	source $VIMRUNTIME/mswin.vim
+	behave mswin
+endif
+
 " 持久撤消，即使文件关闭后重新打开也可以
 if has("win32")
     let $VIMFILES = $VIM.'/vimfiles'
@@ -20,20 +27,27 @@ if has("gui_running")
 	set undoreload=10000 "maximum number of lines to save for undo on a buffer reload
 endif
 
+" 编码设置
+"
+if has("win32")
+	"set encoding=cp936 "set encoding=utf-8
+else
+	set fileformat=dos
+	set fileencodings=ucs-bom,utf-8,cp936
+
+	"set fileencodings=gb18030,utf-8,utf-16,big5 "识别文档时的编码 
+	set fileencoding=gb18030 "文件存储时的编码
+
+	"set termencoding=utf-8 "终端用的编码
+	"set encoding=utf-8 "vim内部编码
+endif
+
+"language zh_CN.UTF-8
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                       全局设定                          
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 编码设置
-"
-set termencoding=utf-8 "终端用的编码
-set encoding=utf-8 "vim内部编码
-set fileencoding=gb18030 "文件存储时的编码
-set fileencodings=gb18030,utf-8,utf-16,big5 "识别文档时的编码 
-"language zh_CN.UTF-8
-
-" 保存文件格式
-set fileformats=dos
-
 " 不要使用vi的键盘模式，而是vim自己的
 set nocompatible
 
@@ -129,52 +143,6 @@ set nopaste
 " 保存代码文件前自动修改最后修改时间
 " 启用timestamp插件
 "let g:timestamp = 1
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 设定解码，编译的时候需要加multi_byte支持。
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("multi_byte")
-	" When 'fileencodings' starts with 'ucs-bom', don't do this manually
-	"set bomb
-	set fileencodings=ucs-bom,utf-8,chinese,taiwan,japan,korea,latin1
-	" CJK environment detection and corresponding setting
-	if v:lang =~ "^zh_CN"
-		" Simplified Chinese, on Unix euc-cn, on MS-Windows cp936
-		set encoding=utf-8
-		set termencoding=utf-8
-		if &fileencoding == ''
-			set fileencoding=utf-8
-		endif
-	elseif v:lang =~ "^zh_TW"
-		" Traditional Chinese, on Unix euc-tw, on MS-Windows cp950
-		set encoding=euc-tw
-		set termencoding=euc-tw
-		if &fileencoding == ''
-			set fileencoding=euc-tw
-		endif
-	elseif v:lang =~ "^ja_JP"
-		" Japanese, on Unix euc-jp, on MS-Windows cp932
-		set encoding=euc-jp
-		set termencoding=euc-jp
-		if &fileencoding == ''
-			set fileencoding=euc-jp
-		endif
-	elseif v:lang =~ "^ko"
-		" Korean on Unix euc-kr, on MS-Windows cp949
-		set encoding=euc-kr
-		set termencoding=euc-kr
-		if &fileencoding == ''
-			set fileencoding=ecu-kr
-		endif
-	endif
-	" Detect UTF-8 locale, and override CJK setting if needed
-	if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-		set encoding=utf-8
-	endif
-else
-	echoerr 'Sorry, this version of (g)Vim was not compiled with "multi_byte"'
-endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""
@@ -284,7 +252,11 @@ nmap cd :cd ~/work/taobao/
 nmap co :e .<CR>jjjj
 
 "edit config file
-nmap cfg :e ~/.vimrc<CR>
+if has("win32")
+	nmap cfg :e $V<CR>
+else
+	nmap cfg :e ~/.vimrc<CR>
+endif
 
 
 " Move lines (Eclipse like)
@@ -351,7 +323,7 @@ vnoremap cu :call RangeUnCommentLine()<CR>
 
 " unix to dos 
 noremap <leader>tw :set fileformat=dos<CR>:set fileencoding=gb18030<CR>
-noremap <leader>w :w<CR>:set fileformat=unix<CR>:set fileencoding=utf8<CR>
+noremap <leader>w :set fileformat=unix<CR>:set fileencoding=utf8<CR>
 
 "onlyfor windows,
 "当中文输入法时光标紫色，当esc后，等待光标变成绿色后再操作
@@ -360,7 +332,11 @@ noremap <leader>w :w<CR>:set fileformat=unix<CR>:set fileencoding=utf8<CR>
 	"highlight CursorIM guifg=NONE guibg=Purple
 "endif
 
-set guifont=Monaco:h16
+if has("mac")
+	set guifont=Monaco:h16
+elseif has("win32")
+	set guifont=Courier_New:h14:cANSI
+endif
 
 "When .vimrc is edited, reload it; 当它引起报错时，是新装的某个插件的原因
 autocmd! bufwritepost .vimrc source ~/.vimrc
@@ -378,8 +354,10 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 set noimd
 if has("gui_running")
-	set imactivatekey=M-space
-	inoremap <ESC> <ESC>:set iminsert=1<CR>
+	if has("mac")
+		set imactivatekey=M-space
+		inoremap <ESC> <ESC>:set iminsert=1<CR>
+	endif
 
     "显示一条竖线，在指定列
     "set colorcolumn=80
