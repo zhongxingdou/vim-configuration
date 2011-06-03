@@ -19,12 +19,19 @@ else
     let $VIMFILES = $HOME.'/.vim'
     let $V = $HOME.'/.vimrc'
 endif
-"
+
 if has("gui_running")
     set undofile
     set undodir=$VIMFILES/undodir
     set undolevels=1000 "maximum number of changes that can be undone
 	set undoreload=10000 "maximum number of lines to save for undo on a buffer reload
+endif
+
+"When .vimrc is edited, reload it; 当它引起报错时，是新装的某个插件的原因
+if has("win32")
+	autocmd! bufwritepost _vimrc source $V
+else
+	autocmd! bufwritepost .vimrc source ~/.vimrc
 endif
 
 " 编码设置
@@ -340,8 +347,6 @@ elseif has("win32")
 	set guifont=Courier_New:h14:cANSI
 endif
 
-"When .vimrc is edited, reload it; 当它引起报错时，是新装的某个插件的原因
-autocmd! bufwritepost .vimrc source ~/.vimrc
 
 "hignlight current line
 "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
