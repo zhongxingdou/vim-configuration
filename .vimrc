@@ -32,10 +32,12 @@ endif
 if has("win32")
 	"set encoding=cp936 "set encoding=utf-8
 else
-	set fileformat=dos
 	set fileencodings=ucs-bom,utf-8,cp936
 
 	"set fileencodings=gb18030,utf-8,utf-16,big5 "识别文档时的编码 
+	
+	"因为淘宝用的是gb编码
+	set fileformat=dos
 	set fileencoding=gb18030 "文件存储时的编码
 
 	"set termencoding=utf-8 "终端用的编码
