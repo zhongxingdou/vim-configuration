@@ -31,25 +31,26 @@ endif
 if has("win32")
 	autocmd! bufwritepost _vimrc source $V
 else
-	autocmd! bufwritepost .vimrc source ~/.vimrc
+	autocmd! BufWritePost .vimrc nested source %
 endif
 
 " 编码设置
 "
 if has("win32")
 	"set encoding=cp936 "set encoding=utf-8
+	"set fileencodings=ucs-bom,utf-8,cp936
 else
-	set fileencodings=ucs-bom,utf-8,cp936
 
-	"set fileencodings=gb18030,utf-8,utf-16,big5 "识别文档时的编码 
+	set fileencodings=utf-8,gb18030,utf-16,big5 "识别文档时的编码 
 	
-	"因为淘宝用的是gb编码
-	set fileformat=dos
-	set fileencoding=gb18030 "文件存储时的编码
 
-	"set termencoding=utf-8 "终端用的编码
-	"set encoding=utf-8 "vim内部编码
+	set termencoding=utf-8 "终端用的编码
+	set encoding=utf-8 "vim内部编码
 endif
+
+"因为淘宝用的是gb编码
+"set fileformat=dos
+"set fileencoding=gb18030 "文件存储时的编码
 
 "language zh_CN.UTF-8
 
@@ -248,11 +249,8 @@ let mapleader = ","
 
 map <MiddleMouse> <LeftMouse>
 
-"save file
-nmap cs :w<CR>
-
 "no highlight
-nmap <F2> :nohl<CR>
+nmap <leader>nh :nohl<CR>
 
 "set current work dir
 nmap cd :cd ~/work/taobao/
@@ -331,8 +329,8 @@ vnoremap cu :call RangeUnCommentLine()<CR>
 "noremap <leader>dp :DiffChangesPatchToggle<CR>
 
 " unix to dos 
-noremap <leader>tw :set fileformat=dos<CR>:set fileencoding=gb18030<CR>
-noremap <leader>w :set fileformat=unix<CR>:set fileencoding=utf8<CR>
+noremap <leader>fd :set fileformat=dos<CR>:set fileencoding=gb18030<CR>
+noremap <leader>fu :set fileformat=unix<CR>:set fileencoding=utf8<CR>
 
 "onlyfor windows,
 "当中文输入法时光标紫色，当esc后，等待光标变成绿色后再操作
@@ -371,21 +369,10 @@ if has("gui_running")
     "hi ColorColumn guibg=#383333
 endif
 
-" Remove trailing whitespace when writing a buffer, but not for diff files.
-" From: Vigil 
-function! RemoveTrailingWhitespace()
-    if &ft != "diff"
-        let b:curcol = col(".")
-        let b:curline = line(".")
-        silent! %s/\s\+$//
-        silent! %s/\(\s*\n\)\+\%$//
-        call cursor(b:curline, b:curcol)
-    endif
-endfunction
-
-"autocmd BufWritePre * call RemoveTrailingWhitespace()
-nmap <leader>r :rubyf %<CR>
-nmap <leader>R :!rake<CR>
+"nmap <leader>r :rubyf %<CR>
+"nmap <leader>R :!rake<CR>
 
 "delete tag attribute
-nmap <leader>da 2dt"x
+nmap <leader>da 3dwx
+
+nmap <leader>m :ToggleHighlightError<CR>

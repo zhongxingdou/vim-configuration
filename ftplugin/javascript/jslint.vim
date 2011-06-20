@@ -52,7 +52,7 @@ if !exists(":JSLintUpdate")
 endif
 
 "by jayli
-function s:ToggleHighlightError()
+function! s:ToggleHighlightError1()
 	if g:JSLintHighlightErrorLine == 0
 		let g:JSLintHighlightErrorLine = 1
 		call s:JSLint()
@@ -61,14 +61,16 @@ function s:ToggleHighlightError()
 		call s:JSLintClear()
 	endif
 endfun
-command ToggleHighlightError :call s:ToggleHighlightError()
+if !exists(":ToggleHighlightError")
+	command ToggleHighlightError :call s:ToggleHighlightError1()
+endif
 
 let g:JSLintHighlightErrorLine = 0
 "JS文件updatetime设置为1秒
 au BufRead *.js set updatetime=1200
 
 "F4来激发/撤销语法检查
-noremap <F4> :ToggleHighlightError<CR>
+"noremap <F4> :ToggleHighlightError<CR>
 
 "关闭没有必要的检查
 "noremap <buffer><silent> dd dd:JSLintUpdate<CR>
