@@ -27,8 +27,8 @@ Bundle "tomtom/tlib_vim"
 Bundle "honza/snipmate-snippets"
 Bundle 'garbas/vim-snipmate'
 Bundle 'kien/ctrlp.vim'
+Bundle 'altercation/vim-colors-solarized'
 "}}}
-
 
 
 "标准设置"{{{
@@ -65,11 +65,17 @@ set hlsearch "搜索出之后高亮关键词
 "显示"{{{
 set guioptions-=T  "hide toolbar
 
-set guifont=Courier_New:h14
+"set guifont=Courier_New:h14
 
 set laststatus=2   " Always show the statusline
 
-color evening
+if has('gui_running')
+    set background=light
+else
+    set background=dark
+endif
+
+colorscheme solarized
 "}}}
 
 "排版"{{{
@@ -83,7 +89,6 @@ set autoindent shiftwidth=4
 
 autocmd FileType ruby set shiftwidth=2 expandtab softtabstop=2
 "}}}
-
 
 
 " 键映射"{{{1
@@ -161,7 +166,8 @@ nmap <leader>c :call SwitchColor()<CR>
 
 " 插件设置"{{{
 
-let g:Powerline_symbols = 'fancy'
-set guifont=Anonymous\ Pro\ for\ Powerline:h14 
+"let g:Powerline_symbols = 'fancy'
+"set guifont=Anonymous\ Pro\ for\ Powerline:h14 
 "}}}
+
 
