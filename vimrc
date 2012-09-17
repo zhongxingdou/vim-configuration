@@ -20,6 +20,9 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-ragtag'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'maksimr/vim-jsbeautify' 
+
 
 "snipmate-dependences
 Bundle "MarcWeber/vim-addon-mw-utils"
@@ -27,7 +30,6 @@ Bundle "tomtom/tlib_vim"
 Bundle "honza/snipmate-snippets"
 Bundle 'garbas/vim-snipmate'
 Bundle 'kien/ctrlp.vim'
-Bundle 'altercation/vim-colors-solarized'
 "}}}
 
 
@@ -72,6 +74,7 @@ set laststatus=2   " Always show the statusline
 if has('gui_running')
     set background=light
 else
+	let g:solarized_termcolors=256
     set background=dark
 endif
 
@@ -166,8 +169,14 @@ nmap <leader>c :call SwitchColor()<CR>
 
 " 插件设置"{{{
 
+" powerline
 "let g:Powerline_symbols = 'fancy'
 "set guifont=Anonymous\ Pro\ for\ Powerline:h14 
+
+"jsbeautify
+nmap <leader>ff :call JsBeautify()<cr>
+
+
 "}}}
 
-
+au BufRead,BufNewFile *.aspx,*.asmx,*.ascx set filetype=aspvbs
