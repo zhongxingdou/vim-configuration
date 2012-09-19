@@ -30,6 +30,7 @@ Bundle "tomtom/tlib_vim"
 Bundle "honza/snipmate-snippets"
 Bundle 'garbas/vim-snipmate'
 Bundle 'kien/ctrlp.vim'
+Bundle "vim-scripts/AutoComplPop"
 "}}}
 
 
